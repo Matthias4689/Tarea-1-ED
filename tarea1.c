@@ -191,25 +191,25 @@ void mostrarReservas(Reserva *reservas) {
 void registrarLibro(List *biblioteca) {
     assert(biblioteca != NULL);
 
-    Libro *nuevoLibro = (Libro *)malloc(sizeof(Libro));
-    assert(nuevoLibro != NULL);
+    Libro *newLibro = (Libro *)malloc(sizeof(Libro));
+    assert(newLibro != NULL);
 
     printf("Ingrese el título del libro: ");
-    scanf("%s", nuevoLibro->titulo);
+    scanf("%s", newLibro->titulo);
     printf("Ingrese el autor del libro: ");
-    scanf("%s", nuevoLibro->autor);
+    scanf("%s", newLibro->autor);
     printf("Ingrese el género del libro: ");
-    scanf("%s", nuevoLibro->genero);
+    scanf("%s", newLibro->genero);
     printf("Ingrese el ISBN del libro: ");
-    scanf("%d", &nuevoLibro->isbn);
+    scanf("%d", &newLibro->isbn);
     printf("Ingrese la ubicación del libro: ");
-    scanf("%s", nuevoLibro->ubicacion);
+    scanf("%s", newLibro->ubicacion);
   
     // Inicializar la lista de reservas del libro
-    nuevoLibro->reservas = NULL;
+    newLibro->reservas = NULL;
 
     //Utilizar pushBack para agregar el nuevo libro a la biblioteca
-    pushBack(biblioteca, nuevoLibro);
+    pushBack(biblioteca, newLibro);
 }
 
 void mostrarDatosLibro(List *biblioteca, const char *titulo, const char *autor) {
@@ -267,17 +267,17 @@ void reservarLibro(List *biblioteca, const char *titulo, const char *autor, cons
     while (biblioteca->current != NULL) {
         Libro *libro = (Libro *)(biblioteca->current->data);
         if (strcmp(libro->titulo, titulo) == 0 && strcmp(libro->autor, autor) == 0) {
-            Reserva *nuevaReserva = crearReserva(nombre_estudiante);
+            Reserva *newReserva = crearReserva(nombre_estudiante);
 
             // Agregar reserva a la lista de reservas del libro
             if (libro->reservas == NULL) {
-                libro->reservas = nuevaReserva;
+                libro->reservas = newReserva;
             } else {
                 Reserva *ultimaReserva = libro->reservas;
                 while (ultimaReserva->siguiente != NULL) {
                     ultimaReserva = ultimaReserva->siguiente;
                 }
-                ultimaReserva->siguiente = nuevaReserva;
+                ultimaReserva->siguiente = newReserva;
             }
 
             printf("Libro \"%s\" reservado por %s\n", libro->titulo, nombre_estudiante);
@@ -411,7 +411,7 @@ void subirCSV(List *biblioteca, const char *nombre_archivo_csv) {
         return;
     }
 
-    char linea[256]; // Tamaño suficiente para leer una línea
+    char linea[256];
     while (fgets(linea, sizeof(linea), archivo)) {
         // Divide la línea en campos usando la coma como delimitador
         char *titulo = strtok(linea, ",");
@@ -426,19 +426,19 @@ void subirCSV(List *biblioteca, const char *nombre_archivo_csv) {
             int isbn = atoi(isbn_str);
 
             // Crea un nuevo libro con los datos del archivo CSV
-            Libro *nuevoLibro = (Libro *)malloc(sizeof(Libro));
-            assert(nuevoLibro != NULL);
+            Libro *newLibro = (Libro *)malloc(sizeof(Libro));
+            assert(newLibro != NULL);
 
-            strcpy(nuevoLibro->titulo, titulo);
-            strcpy(nuevoLibro->autor, autor);
-            strcpy(nuevoLibro->genero, genero);
-            nuevoLibro->isbn = isbn;
-            strcpy(nuevoLibro->ubicacion, ubicacion);
-            strcpy(nuevoLibro->estado, estado);
-            nuevoLibro->reservas = NULL;
+            strcpy(newLibro->titulo, titulo);
+            strcpy(newLibro->autor, autor);
+            strcpy(newLibro->genero, genero);
+            newLibro->isbn = isbn;
+            strcpy(newLibro->ubicacion, ubicacion);
+            strcpy(newLibro->estado, estado);
+            newLibro->reservas = NULL;
 
             // Agrega el nuevo libro a la biblioteca
-            pushBack(biblioteca, nuevoLibro);
+            pushBack(biblioteca, newLibro);
         }
     }
 
@@ -571,7 +571,7 @@ int main() {
         }
     } while (option != 0);
 
-    // Limpiar la memoria antes de salir
+    // limpiar lista y liberar memoria
     cleanList(biblioteca);
     free(biblioteca);
 
